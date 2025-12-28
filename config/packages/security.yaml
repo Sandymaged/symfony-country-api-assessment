@@ -1,0 +1,22 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\InMemoryUser: plaintext  
+
+    providers:
+        app_users:
+            memory:
+                users:
+                    admin: { password: '1234568789', roles: ['ROLE_ADMIN'] }  
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            http_basic:
+                realm: 'Secured Country API'
+            provider: app_users
+
+    access_control:
+        - { path: ^/api/v1/countries, roles: PUBLIC_ACCESS, methods: GET } 
+        - { path: ^/api/v1/countries, roles: ROLE_ADMIN, methods: [POST, PATCH, DELETE] }  
